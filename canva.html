@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Beating Heart</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      background: white;
+    }
+  </style>
+</head>
+<body>
+<canvas id="heartCanvas" width="400" height="400"></canvas>
+
+<script>
+  const canvas = document.getElementById('heartCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let scale = 1;
+  let growing = true;
+
+  function drawHeart(scaleFactor) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.save();
+    ctx.translate(200, 200); // Move to center
+    ctx.scale(scaleFactor, scaleFactor);
+
+    ctx.beginPath();
+    ctx.moveTo(0, 40);
+    ctx.bezierCurveTo(-80, -20, -80, -120, 0, -80);
+    ctx.bezierCurveTo(80, -120, 80, -20, 0, 40);
+    ctx.closePath();
+
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animate() {
+    if (growing) {
+      scale += 0.01;
+      if (scale >= 1.2) growing = false;
+    } else {
+      scale -= 0.01;
+      if (scale <= 1) growing = true;
+    }
+
+    drawHeart(scale);
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+</body>
+</html>
